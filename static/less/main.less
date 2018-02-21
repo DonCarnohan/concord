@@ -1,0 +1,58 @@
+body{
+  font-size: 14px;
+  font-family: "Rubik";
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family: "Raleway";
+  font-weight: bold;
+}
+
+nav{
+  position: relative;
+  z-index: 10;
+}
+
+button, input {
+  outline: none;
+}
+
+.no-padding{
+    padding: 0;
+}
+
+.strong{
+  font-weight: bold;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.align-middle td{
+  vertical-align: middle !important;
+}
+
+.bold-outline{
+    color: white;
+    text-shadow: -1px -1px 1px #000,
+      1px -1px 1px #000,
+      -1px 1px 1px #000,
+       1px 1px 1px #000
+}
+.bold-outline:after{
+    content: attr(data-title);
+}
+
+.concord{
+  font-family: "Bungee";
+  font-weight: normal !important;
+}
+
+#content{
+  opacity: 1;
+  transition: opacity 1s;
+}
+#content:empty{
+  opacity: 0;
+}

@@ -1,0 +1,8 @@
+<h6 class="title"><%- title %></h6>
+<ul class="filter-options">
+<% _.each(options, function(option){ %>
+    <li>
+        <a href="javascript:void(0);" data-value="{{option.id}}" class="filter">{{option.description}}</a>
+    </li>
+<% }) %>
+</ul>

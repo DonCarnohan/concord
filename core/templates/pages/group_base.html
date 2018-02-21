@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block nav %}
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Concord</a>
+          <a class="navbar-brand" href="/group_url/">{{group_name}}</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/{{group_url}}/schedule/">Schedule</a></li>
+            <li><a href="/{{group_url}}/events/">Events</a></li>
+            <li><a href="/{{group_url}}/members/">Members</a></li>
+          </ul>
+          <ul class="nav navbar-nav pull-right">
+            {% if user.is_authenticated %}
+            <li></li>
+            <li class=""><a href="/account/">{{user.username}} ({{user.userprofile.display_name}})</a></li>
+            <li class=""><a href="/logout/">Log out</a></li>
+            {% else %}
+            <li><a href="/login/">Log in</a></li>
+            {% endif %}
+
+          </ul>
+          {% if user.is_authenticated %}
+          <form class="navbar-form navbar-right">
+              {% if user.userprofile.discord_information %}
+                  <a href="/update-nickname/" class="btn btn-primary">Pull Nickname</a>
+              {% else %}
+            <a href="https://discordapp.com/api/oauth2/authorize?response_type=code&client_id=363854859629363201&scope=identify%20guilds&state=15773059ghq9183habn&redirect_uri=http%3A%2F%2Fintothevoid.info/login/" class="btn btn-primary">Connect with Discord</a>
+              {% endif %}
+          </form>
+          {% endif %}
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    {% endblock %}
