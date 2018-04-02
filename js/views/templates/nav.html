@@ -1,0 +1,10 @@
+<% if(brand){ %>
+    <%= brand %>
+<% } %>
+<ul class="nav navbar-nav">
+<% _.each(pages, function(page){ %>
+    <li class="<%-page.className%>">
+        <a href="<%- page.href %>"> <%- page.title %> </a>
+    </li>
+<% }) %>
+</ul>

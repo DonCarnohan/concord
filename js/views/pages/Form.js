@@ -15,14 +15,20 @@ define([
 ){
     var Form = PageBase.extend({
         model: null,
-        instance_data: null,
+        instance_id: null,
+        group_id: null, //optional
         _instance: null,
         _fields: null,
         template: _.template(formTemplateText),
 
         getInstance: function(){
             if(!this._instance){
-                this._instance = new this.model(JSON.parse(this.instance_data || "{}"));
+                this._instance = new this.model({id: this.instance_id});
+                if(this.instance_id){
+                    this._instance.fetch({async: false});
+                } else if(this.group_id){
+                    this._instance.set("group_id", this.group_id);
+                }
             }
             return this._instance;
         },
@@ -35,18 +41,26 @@ define([
                     size: "lg",
                     style: "success",
                 });
-                this._saveButton.on("click", function(){
-                    var errors = self.getForm().commit({validate: true});
-                    if(!errors){
-                        var deferred = self.getInstance.save();
-                        deferred.then(function(){
+                this._saveButton.$el.on("click", _.bind(function(){
+                    var instance = self.getInstance();
+                    if(instance.isValid()){
+                        var deferred = instance.save();
+                        deferred.then(_.bind(function(){
                             //Success
-                        }, function(){
+                            //Handle group creation special case (I'M SORRY! T-T ~Don)
+                            if(instance.has("url_name")){
+                                window.location.href = "/group/"+instance.get("url_name");
+                            } else {
+                                window.location.href = "/";
+                            }
+                        }, this), _.bind(function(jqXHR){
                             //Error
-
-                        });
+                            if(jqXHR.responseJSON){
+                                this.handleErrors(jqXHR.responseJSON);
+                            }
+                        }, this));
                     }
-                });
+                }, this));
             }
             return this._saveButton;
         },
@@ -72,15 +86,24 @@ define([
                 var fieldName = options.name;
                 if(!this._fields[fieldName]){
                     this._fields[fieldName] = new FormField(_.extend({
+                        instance: instance,
                     },options));
-                    this._fields[fieldName].on("change", function(evt){
-                        instance.set(fieldName, evt.newValue);
-                    }, this);
                 }
                 form.append(this._fields[fieldName].$el);
             }, this);
-            form.addClass("col-md-4");
+            form.addClass("col-md-8");
             this.$el.find("#button-container").append(this.getSaveButton().$el);
+        },
+
+        handleErrors: function(errors){
+            for(var fieldName in this._fields){
+                var field = this._fields[fieldName];
+                if(errors[fieldName]){
+                    field.setError(errors[fieldName]);
+                } else {
+                    field.setError(null);
+                }
+            }
         },
     });
 

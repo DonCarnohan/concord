@@ -31,7 +31,7 @@ define([
             var privateName = "_"+name;
             var functionName = "get"+name[0].toUpperCase() + name.substring(1);
             this[functionName] = function(){
-                if(!self[privatename]){
+                if(!self[privateName]){
                     self[privateName] = newFunction();
                 }
                 return self[privateName];

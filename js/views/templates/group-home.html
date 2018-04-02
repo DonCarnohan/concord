@@ -1,0 +1,18 @@
+
+<nav id="group-nav"></nav>
+<div class="jumbotron">
+    <h2><%- group.get("name") %></h2>
+    <p> <%- group.get("description") %>
+    </p>
+</div>
+
+
+<% if(group.hasPermission(["edit", "edit:home_page_markdown"])){ %>
+<button id="edit-button" class="btn btn-primary pull-right">Edit Body</button>
+<% } %>
+<div class="body-container">
+</div>
+<% if(group.hasPermission(["edit", "edit:home_page_markdown"])){ %>
+<div class="editor-container hidden">
+</div>
+<% } %>

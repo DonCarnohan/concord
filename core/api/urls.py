@@ -4,7 +4,10 @@ from core.api import views
 
 router = routers.DefaultRouter()
 # router.register(r'users', views.UserViewSet)
-# router.register(r'groups', views.GroupViewSet)
+router.register(r'groups', views.GroupViewSet, base_name="group")
+router.register(r'sessions', views.SessionViewSet, base_name="session")
+router.register(r'events', views.EventViewSet, base_name="event")
+router.register(r'event-categories', views.EventCategoryViewSet, base_name="event-category")
 
 
 urlpatterns = [

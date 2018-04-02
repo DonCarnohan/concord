@@ -1,16 +1,53 @@
+@import "bootstrap/bootstrap.less";
+@import "variables.less";
+@import "bootswatch.less";
+
 body{
   font-size: 14px;
-  font-family: "Rubik";
-}
-
-h1,h2,h3,h4,h5,h6{
-  font-family: "Raleway";
-  font-weight: bold;
 }
 
 nav{
   position: relative;
   z-index: 10;
+}
+
+.jumbotron+nav{
+  margin-top: -30px;
+}
+
+body > .navbar{
+  padding-bottom: 302px;
+  margin-bottom: -302px;
+
+  &::after{
+    content: " ";
+    height:2px;
+    position: absolute;
+    width: 100%;
+    background-color: @body-bg;
+  box-shadow: @body-bg 0 0 4px;
+    bottom: 10px;
+  }
+}
+.navbar-brand{
+  font-weight: bold;
+}
+/*body > .navbar .navbar-brand{
+  background-color: @brand-primary;
+  color: lighten(@brand-primary, 40%) !important;
+  border-radius: 5px;
+  height: 40px;
+  margin-top: 14px;
+  padding: 9px 15px;
+}*/
+
+#group-nav{
+  margin-bottom: 5px;
+}
+
+.position-right{
+  position: absolute !important;
+  right: 0;
 }
 
 button, input {
@@ -19,6 +56,18 @@ button, input {
 
 .no-padding{
     padding: 0;
+}
+.no-padding-top{
+    padding-top: 0;
+}
+.no-padding-right{
+    padding-right: 0;
+}
+.no-padding-bottom{
+    padding-bottom: 0;
+}
+.no-padding-left{
+    padding-left: 0;
 }
 
 .strong{
@@ -44,15 +93,227 @@ button, input {
     content: attr(data-title);
 }
 
+
 .concord{
   font-family: "Bungee";
   font-weight: normal !important;
 }
+/*
+@theme-color: #ffdd47;
+text-theme{
+  color: @theme-color !important;
+}
+label-theme,
+btn-theme{
+  color: @theme-color;
+}
+*/
 
 #content{
   opacity: 1;
   transition: opacity 1s;
+  padding-top: 15px;
+  padding-bottom: 30px;
+  position: relative;
+  z-index: 100;
+  background-color: @body-bg;
+  box-shadow: @body-bg 0 0 4px;
+  border-radius: 4px 4px 0 0 ;
 }
+
 #content:empty{
   opacity: 0;
+}
+
+.form-group{
+  overflow: hidden;
+}
+
+.editor-container{
+
+  textarea{
+    padding: 5px;
+    margin: 10px;
+    width: 100%;
+    min-height:200px;
+    resize: vertical;
+  }
+}
+
+.list-item a{
+  //color: #444;
+  text-decoration: none !important;
+  /*&:hover,
+  &:visited,
+  &.strong{
+    color: @brand-info;
+  }*/
+}
+
+.filter-options{
+  padding-left: 10px;
+
+  li{
+    display: block;
+    a{
+      display: inline-block;
+      width: 100%;
+      &:hover{
+        //TODO: Do something more here... idk what yet
+      }
+    }
+  }
+
+  .filter{
+    color: #444;
+    text-decoration: none !important;
+    &:hover,
+    &:visited,
+    &.strong{
+    color: @brand-primary;
+    }
+  }
+}
+
+/* LIST STYLE */
+.list-item .abbreviation{
+  font-size: 30px;
+  text-align: center;
+}
+
+.underline{
+  position: relative;
+  display: inline-block;
+  &::after{
+    content: "  ";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    display: inline-block;
+    background-color: @brand-primary;
+    height: 3px;
+    width: 40px;
+    max-width: 100%;
+  }
+  &::before{
+    content: "  ";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    display: inline-block;
+    background-color: @gray-light;
+    height: 2px;
+    width: 100%;
+  }
+}
+
+
+/* LOADER */
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -2.7em;
+  margin-left: -2.7em;
+  width: 5.4em;
+  height: 5.4em;
+  background-color: @body-bg;
+
+  .box1,
+  .box2,
+  .box3,
+  .box4,
+  .box5,
+  .box6,
+  .box7
+  {
+    position: absolute;
+    left: 0;
+    bottom: -.1em;
+    width: 1em;
+    height: 1em;
+    background-color: @gray-dark;
+    border: 0em solid @gray-dark;
+    border-radius: 10%;
+    transform: translate(0, 0) rotate(45deg);
+    animation: spin 10s cubic-bezier(.79, 0, .47, .97) infinite;
+  }
+
+  .box1{
+    animation-delay: -1.43s;
+  }
+  .box2{
+    animation-delay: -2.86s;
+  }
+  .box3{
+    animation-delay: -4.29s;
+  }
+  .box4{
+    animation-delay: -5.72s;
+  }
+  .box5{
+    animation-delay: -7.15s;
+  }
+  .box6{
+    animation-delay: -8.58s;
+  }
+  .box7{
+    animation-delay: -10s;
+  }
+}
+
+
+
+@keyframes spin {
+  0% {
+    transform: translate(0, 0em) rotate(45deg);
+  }
+  9.5% {
+    transform: translate(0, 0em) rotate(45deg);
+  }
+  12.5% {
+    transform: translate(-1em, 1em) rotate(45deg);
+  }
+  22% {
+    transform: translate(-1em, 1em) rotate(45deg);
+  }
+  25% {
+    transform: translate(-2em, 0em) rotate(45deg);
+  }
+  34.5% {
+    transform: translate(-2em, 0em) rotate(45deg);
+  }
+  37.5% {
+    transform: translate(-1em, -1em) rotate(45deg);
+  }
+  47% {
+    transform: translate(-1em, -1em) rotate(45deg);
+  }
+  50% {
+    transform: translate(0em, -2em) rotate(45deg);
+  }
+  59.5% {
+    transform: translate(0em, -2em) rotate(45deg);
+  }
+  62.5% {
+    transform: translate(1em, -1em) rotate(45deg);
+  }
+  72% {
+    transform: translate(1em, -1em) rotate(45deg);
+  }
+  75% {
+    transform: translate(2em, 0em) rotate(45deg);
+  }
+  83.5% {
+    transform: translate(2em, 0em) rotate(45deg);
+  }
+  87.5% {
+    transform: translate(1em, 1em) rotate(45deg);
+  }
+  97% {
+    transform: translate(1em, 1em) rotate(45deg);
+  }
+  100% {
+    transform: translate(0em, 0em) rotate(45deg);
+  }
 }

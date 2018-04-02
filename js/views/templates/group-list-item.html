@@ -1,0 +1,15 @@
+<div class="row list-item callout <% if(isMember){ %> callout-primary <% } else { %>callout-default<% } %>">
+    <div class="col-md-2 abbreviation">
+        <% if(isMember){ %><a href="/group/<%-abbreviation%>/"><% } %>
+        <%- abbreviation %>
+        <% if(isMember){ %></a><% } %>
+    </div>
+    <div class="col-md-10">
+        <h4>
+            <% if(isMember){ %><a href="/group/<%-abbreviation%>/"><% } %>
+                <%- title %>
+            <% if(isMember){ %></a><% } %>
+        </h4>
+        <p><%- description %></p>
+    </div>
+</div>
