@@ -29,7 +29,7 @@ define([
         noResultsMessage: "There's nothing to show.",
         template: _.template(listTemplateText),
         listItemTemplate: _.template(listItemTemplateText),
-        groupHeadingTemplate: _.template(listItemTemplateText),
+        groupHeadingTemplate: _.template(groupHeadingTemplateText),
         groupBy: null,
         getGroupings: function(){
             var groupings = {};
@@ -50,6 +50,7 @@ define([
 
                 }, this);
             }
+            return groupings;
         },
         initialize: function(){
             this._filterGroups = {};
@@ -90,24 +91,24 @@ define([
             listContainer.empty();
             if(this.data){
                 _.each(this.data, function(listItem){
-                    var newListItem = this.renderListItem(listItem);
-                    listContainer.append(newListItem);
+                    var renderedListItem = this.renderListItem(listItem);
+                    listContainer.append(renderedListItem);
                 }, this);
             } else if(this.collection){
                 var groupings = this.getGroupings();
                 if(groupings){
                     for(var grouping in groupings){
                         var heading = this.groupHeadingTemplate({title:grouping});
-                        listConainter.append(heading);
-                        for(var item in groupings[grouping]){
-                            var newListItem = this.renderListItem(listItem);
-                            listContainer.append(newListItem);
-                        }
+                        listContainer.append(heading);
+                        _.each(groupings[grouping], _.bind(function(listItem){
+                            var renderedListItem = this.renderListItem(listItem);
+                            listContainer.append(renderedListItem);
+                        }, this));
                     }
                 } else {
                     this.collection.each(function(listItem){
-                        var newListItem = this.renderListItem(listItem);
-                        listContainer.append(newListItem);
+                        var renderedListItem = this.renderListItem(listItem);
+                        listContainer.append(renderedListItem);
                     }, this);
                 }
             }

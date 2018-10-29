@@ -1,24 +1,28 @@
 define([
-    "views/pages/PageBase",
+    "views/pages/GroupPageBase",
     "views/widgets/List",
+    "views/widgets/GroupNav",
     "models/Event",
     "collections/EventCollection",
+    "collections/EventCategoryCollection",
     "backbone",
     "underscore",
-    "text!views/templates/schedule.html",
+    "text!views/templates/group-events.html",
     "text!views/templates/event-list-item.html",
 ], function(
-    PageBase,
+    GroupPageBase,
     List,
+    GroupNav,
     Event,
     EventCollection,
+    EventCategoryCollection,
     Backbone,
     _,
     templateText,
     eventListItemTemplateText,
 ){
-    var Schedule = PageBase.extend({
-        title: "Schedule",
+    var Events = GroupPageBase.extend({
+        title: "Events",
         template: _.template(templateText),
         initialize: function(){
             var self = this;
@@ -27,42 +31,48 @@ define([
                 collection.fetch();
                 return collection;
             }, this));
+            this._createComponent("eventCategoryCollection", _.bind(function(){
+                var collection = new EventCategoryCollection();
+                collection.fetch();
+                return collection;
+            }, this));
+            this._createComponent("eventCategoryFilters", _.bind(function(){
+                var collection = this.getEventCategoryCollection();
+                var filters = [];
+                collection.forEach(_.bind(function(category){
+                    filters.push({
+                        id: category.get("id"),
+                        description: category.get("description"),
+                    });
+                }, this));
+                return filters;
+            }, this));
             this._createComponent("eventList", _.bind(function(){
                 return new List({
                     collection: this.getEventCollection(),
                     listItemTemplate: _.template(eventListItemTemplateText),
                     groupBy: function(item){
-
+                        return item.get("event_category").get("description");
                     },
                     listItemContextMap: {
-                        title: "name",
+                        id: "id",
+                        title: "title",
                         description: "description",
-                        abbreviation: "url_name",
-                        isMember: "is_member",
+                        event_category_description: "event_category__description",
                     },
                     filters: [
-                        // {
-                        //     field: "attending",
-                        //     title: "Show",
-                        //     options: [
-                        //         {id:false, description:"All Sessions"},
-                        //         {id:true, description:"Attending", default:true},
-                        //     ],
-                        // },
-                        // {
-                        //     field: "sort",
-                        //     title: "Sort By",
-                        //     options: [
-                        //         {id:"name", description:"Name", default:true},
-                        //         {id:"session", description:"Upcoming Events"},
-                        //         {id:"attended_session", description:"Recently Attended Events"},
-                        //         {id:"joined_date", description:"Date Joined"},
-                        //     ],
-                        // },
+                        {
+                            field: "event_category__id",
+                            title: "Category",
+                            options: this.getEventCategoryFilters(),
+                        },
                     ],
                 });
             }, this));
-            PageBase.prototype.initialize.apply(this, arguments);
+
+            $.when(this.getEventCategoryCollection().dataDeferred).then(_.bind(function(){
+                GroupPageBase.prototype.initialize.apply(this, arguments);
+            }, this));
         },
         getContext: function(){
             return {
@@ -70,10 +80,10 @@ define([
             }
         },
         render: function(){
-            PageBase.prototype.render.apply(this, arguments);
+            GroupPageBase.prototype.render.apply(this, arguments);
             this.$el.append(this.getEventList().$el);
         },
     });
 
-    return Schedule;
+    return Events;
 });

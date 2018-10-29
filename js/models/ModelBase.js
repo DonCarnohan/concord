@@ -71,6 +71,15 @@ define([
             }   
         },
 
+        get: function(field){
+            var getFunctionName = 'get'+field.charAt(0).toUpperCase()+field.slice(1);
+            if(this[getFunctionName]){
+                return this[getFunctionName]();
+            } else {
+                return Backbone.Model.prototype.get.apply(this, arguments);
+            }
+        },
+
         hasPermission: function(permission){
             // All permissions are double-checked by backend where it *really* matters.
             var allowed = false;

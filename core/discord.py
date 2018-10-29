@@ -50,7 +50,7 @@ def authenticate_user(request, code, group):
     member = response.json()
 
     if member.get("code"):# not members_response.get("code", None):
-        raise ValidationError('Your discord account is not a member of that server. Are you sure you\'re logged in correctly?')
+        raise ValidationError("Your discord account is not a member of that server. Are you sure you're logged in correctly?")
 
     return member
 

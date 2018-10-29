@@ -133,6 +133,7 @@ class EventSerializer(serializers.ModelSerializer):
     event_category_id = serializers.IntegerField()
     group = LightGroupSerializer(read_only=True)
     group_id = serializers.IntegerField()
+    options = serializers.SerializerMethodField()
     class Meta:
         model = models.Event
         fields = (
@@ -144,23 +145,43 @@ class EventSerializer(serializers.ModelSerializer):
             'event_category_id',
             'group',
             'group_id',
+            'options',
         )
+    def get_options(self, event):
+        return {}
 
 class SessionSerializer(serializers.ModelSerializer):
-    sessionattenance_set = LightSessionAttendanceSerializer(many=True)
+    sessionattenance_set = LightSessionAttendanceSerializer(many=True, read_only=True)
+    event = EventSerializer(read_only=True)
+    event_id = serializers.IntegerField()
     group = LightGroupSerializer(read_only=True)
     group_id = serializers.IntegerField()
+    start_timestamp = serializers.DateTimeField(input_formats=('%m/%d/%Y %H:%M %p',))
+    end_timestamp = serializers.DateTimeField(input_formats=('%m/%d/%Y %H:%M %p',))
+    permissions = serializers.SerializerMethodField()
     class Meta:
         model = models.Session
         fields = (
             'id',
             'event',
+            'event_id',
             'sessionattenance_set',
             'start_timestamp',
             'end_timestamp',
             'group',
             'group_id',
+            'permissions',
         )
+    def get_permissions(self, session):
+        user_permissions = []
+        permissions = json.loads(session.permissions_json)
+        user_id = self.context['request'].user.id
+        for key, value in permissions.items():
+            if user_id in value:
+                user_permissions.append(key)
+        if user_id == session.created_by_user_id:
+            user_permissions.append("all");
+        return user_permissions
 
 class SessionAttendanceSerializer(serializers.ModelSerializer):
     session = LightSessionSerializer()

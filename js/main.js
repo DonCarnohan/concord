@@ -14,6 +14,9 @@ var require = {
         'bootstrap': {
             deps: ['jquery'],
         },
+        'datetimepicker': {
+            deps: ['jquery'],
+        },
     },
     paths: {
         jquery: '../lib/jquery-3.2.1.min',
@@ -21,9 +24,10 @@ var require = {
         backboneForm: '../lib/backbone-forms.min',
         underscore: '../lib/underscore-min',
         showdown: '../lib/showdown.min',
+        select2: '../lib/select2',//.min',
         moment: '../lib/moment.min',
         bootstrap: '../lib/bootstrap/js/bootstrap.min',
-        datetimepicker: '../lib/bootstrap-datetimepicker.min',
+        datetimepicker: '../lib/bootstrap-datetimepicker',
         text: '../lib/text',
     }
 };

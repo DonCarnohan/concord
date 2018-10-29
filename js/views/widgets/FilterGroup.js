@@ -20,6 +20,14 @@ define([
                 options: this.options,
             };
         },
+        initialize: function(){
+            if(this.options.fetch){
+                this.options.on("add update sort sync", function(){
+                    this.update();
+                });
+            }
+            ViewBase.prototype.initialize.apply(this, arguments);
+        },
         render: function(){
             var self = this;
             ViewBase.prototype.render.apply(this, arguments);

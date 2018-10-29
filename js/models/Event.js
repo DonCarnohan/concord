@@ -1,11 +1,13 @@
 define([
     "models/EventCategory",
+    "collections/EventCategoryCollection",
     "models/Group",
     "models/ModelBase",
     "models/validators",
     "backbone",
 ], function(
     EventCategory,
+    EventCategoryCollection,
     Group,
     ModelBase,
     validators,
@@ -33,7 +35,10 @@ define([
             {name:'title', type: 'Text', label: "Title", editorOptions: {
                 autocomplete: "off"
             }, validators:[validators.NotBlankValidator]},
-            {name:'event_category_id', type: 'Text', label: "Category"},
+            {name:'event_category_id', type: 'ModelChoice', label: "Category", editorOptions: {
+                descriptionProperty: 'description',
+                collectionType: EventCategoryCollection,
+            }, validators:[validators.NotBlankValidator]},
             {name:'description', type: 'TextArea', label: "Description"},
             {name:'tags', type: 'Text', label: "Tags (space separated)"},
         ],

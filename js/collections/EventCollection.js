@@ -1,15 +1,15 @@
 define([
     "collections/CollectionBase",
-    "models/EventCategory",
+    "models/Event",
     "backbone",
 ], function(
     CollectionBase,
-    EventCategory,
+    Event,
     Backbone,
 ){
     var Collection = CollectionBase.extend({
-        model: EventCategory,
-        url: '/api/event-categories/'
+        model: Event,
+        url: '/api/events/'
     });
     //Group.collection = GroupCollection;
 

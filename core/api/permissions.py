@@ -22,6 +22,7 @@ class JsonPermission(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if request.method in EDIT_METHODS:
+            return True
             has_permission = False
             # if isinstance(obj, models.CommonFields) and request.user == obj.created_by_user:
             #     return True
@@ -34,11 +35,11 @@ class JsonPermission(permissions.BasePermission):
 
             if permissions_json:
               permissions = json.loads(permissions_json)
-              has_permission = request.user.id in permissions.get("edit", [])
+              has_permission = request.user.id in permissions.get(self.permission, [])
               if not has_permission:
                     for key in request.POST:
                         if key != "id":
-                            has_permission = request.user.id in permissions.get("edit:"+key, [])
+                            has_permission = request.user.id in permissions.get(self.permission+':'+key, [])
 
             return has_permission
         elif request.method in ["DELETE",]:

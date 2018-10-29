@@ -3,6 +3,7 @@ define([
     "views/widgets/Textbox",
     "views/widgets/TextArea",
     "views/widgets/DateTimePicker",
+    "views/widgets/ModelChoice",
     "backbone",
     "underscore",
     "text!views/templates/form-field.html",
@@ -11,6 +12,7 @@ define([
     Textbox,
     TextArea,
     DateTimePicker,
+    ModelChoice,
     Backbone,
     _,
     formFieldTemplateText,
@@ -24,6 +26,7 @@ define([
             "Text": Textbox,
             "TextArea": TextArea,
             "DateTime": DateTimePicker,
+            "ModelChoice": ModelChoice,
         },
 
         getEditor: function(force){
@@ -48,7 +51,11 @@ define([
             label.attr("for", this.name);
             var editorContainer = this.$el.find(".editor-container");
             var editor = this.getEditor();
-            editor.setValue(this.value);
+            if(this.instance){
+                editor.setValue(this.instance.get(this.name));
+            }else if(this.value){
+                editor.setValue(this.value);
+            }
             editorContainer.append(editor.$el);
             var validateField = function(){
                 //validate

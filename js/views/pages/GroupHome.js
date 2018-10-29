@@ -1,5 +1,5 @@
 define([
-    "views/pages/PageBase",
+    "views/pages/GroupPageBase",
     "views/widgets/Button",
     "views/widgets/TextArea",
     "views/widgets/GroupNav",
@@ -9,7 +9,7 @@ define([
     "showdown",
     "text!views/templates/group-home.html",
 ], function(
-    PageBase,
+    GroupPageBase,
     Button,
     TextArea,
     GroupNav,
@@ -19,21 +19,8 @@ define([
     showdown,
     templateText,
 ){
-    var GroupHome = PageBase.extend({
+    var GroupHome = GroupPageBase.extend({
         template: _.template(templateText),
-        getGroup: function(options){
-            if(this.group){
-                this._group = this.group;
-                delete this.group;
-            }
-            if(!this._group){
-                this._group = new Group({id: this.group_id});
-                if(this.group_id){
-                    this._group.fetch(options);
-                }
-            }
-            return this._group;
-        },
         getHomeHTML: function(){
             var converter = new showdown.Converter();
             var homeFragment = $(converter.makeHtml(this.getGroup().get("home_page_markdown")));
@@ -64,11 +51,7 @@ define([
                 }, this));
                 return button;
             }, this));
-            var group = this.getGroup();
-            $.when(group.dataDeferred).then(_.bind(function(){
-                this.render();
-            }, this));
-            //PageBase.prototype.initialize.apply(this, arguments);
+            GroupPageBase.prototype.initialize.apply(this, arguments);
         },
         getContext: function(){
             return {
@@ -77,12 +60,7 @@ define([
             }
         },
         render: function(){
-            var group = this.getGroup();
-            document.title = "Concord - "+group.get("name");
-            PageBase.prototype.render.apply(this, arguments);
-            var groupNav = new GroupNav({
-                group: group,
-            });
+            GroupPageBase.prototype.render.apply(this, arguments);
             this.renderBody();
             var bodyContainer = this.$el.find(".body-container");
             var editorContainer = this.$el.find(".editor-container");
